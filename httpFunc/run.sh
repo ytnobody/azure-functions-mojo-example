@@ -1,0 +1,1 @@
+perl -MJSON::PP -le "print encode_json(+{%ENV})" > $res
