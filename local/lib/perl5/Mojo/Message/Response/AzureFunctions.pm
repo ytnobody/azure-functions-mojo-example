@@ -17,7 +17,7 @@ sub hash {
 
     {
         status  => $self->code || 404,
-        headers => $self->headers->to_hash(1),
+        headers => $self->headers->to_hash,
         body    => $body,
     };
 }
