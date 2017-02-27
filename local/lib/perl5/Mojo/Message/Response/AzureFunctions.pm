@@ -2,16 +2,23 @@ package Mojo::Message::Response::AzureFunctions;
 use strict;
 use warnings;
 use Mojo::Base 'Mojo::Message::Response';
-use Mojo::JSON qw(encode_json);
+use Mojo::JSON qw(decode_json encode_json);
 
 our $BIND_NAME = 'res';
 
 sub hash {
     my $self = shift;
+
+    ### want hashref. no wanted json-string.
+    my $body = $self->body =~ /\A\{/ ? eval {decode_json($self->body)} : $self->body;
+    if ($@) {
+        $body = $self->body;
+    }
+
     {
         status  => $self->code || 404,
         headers => $self->headers->to_hash(1),
-        body    => $self->body,
+        body    => $body,
     };
 }
 
